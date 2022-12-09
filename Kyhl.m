@@ -189,7 +189,7 @@ end
 function EP_f = frequency_sweep(N, M)
     
     % Step Size
-    df = 1;
+    df = 30;
     
     
     EP_f = [] ;
@@ -294,14 +294,27 @@ function A = Create_A_Matrix(N, M, f)
     A = sparse(kron(sparse(eye(M,M)),A_Diagonal))  ;
 
     % Adding additional elements and BC:s
+%     for j = 1:(N+1):(M-1)*(N+1)
+%         if j == (M-1)*(N+1)
+%             A(1:N, (N+1)*(M-1):((N+1)*(M-1) + N)) = sparse(diag(d)) ;
+%         else
+%             A(j:(j + N ), N + j + 1:(j + 1+ 2*(N ))) = sparse(diag(d)) ;
+%         end
+%         if j == 1
+%             A(((N+1)*(M-1)+1):((N+1)*(M-1)+ N)+1, 1:N+1) = sparse(diag(e)) ;
+%         else
+%             A(N + 1 + j :(j + 1+ 2*(N )), j:(j + N )) = sparse(diag(e)) ;
+%         end
+%     end
+
     for j = 1:(N+1):(M-1)*(N+1)
         if j == 1 
-            A(j:(j + N ), N + j + 1:(j + 1+ 2*(N ))) = sparse(diag(d)) ;
+            A(j:(j + N ), N + j + 1:(j + 1+ 2*(N ))) = sparse(2*diag(d)) ;
         else
             A(j:(j + N ), N + j + 1:(j + 1+ 2*(N ))) = sparse(diag(d)) ;
         end
         if j == (M-1)*(N+1)
-            A(N + j + 1:(j + 1+ 2*(N )), j:(j + N )) = sparse(diag(e)) ;
+            A(N + j + 1:(j + 1+ 2*(N )), j:(j + N )) = sparse(2*diag(e)) ;
         else
             A(N + j + 1:(j + 1+ 2*(N )), j:(j + N )) = sparse(diag(e)) ;
         end
